@@ -1490,3 +1490,21 @@ class RazerDeathAdder1800(__RazerDevice):
     RAZER_URLS = {
         "top_img": DEVICE_IMAGE
     }
+
+
+class Atheris(__RazerDevice):
+    """
+    Class for the Razer Atheris
+    """
+    USB_VID = 0x1532
+    USB_PID = 0x0062
+    METHODS = ['get_device_type_mouse', 'get_dpi_xy', 'set_dpi_xy', 'get_poll_rate', 'set_poll_rate', 'max_dpi']
+
+    DPI_MAX = 7200
+
+    DEVICE_IMAGE = "https://assets.razerzone.com/eeimages/support/products/1234/1234_atheris.png"
+
+    # Deprecated - RAZER_URLS be removed in future.
+    RAZER_URLS = {
+        "top_img": "https://assets.razerzone.com/eeimages/support/products/1234/1234_atheris.png"
+    }
