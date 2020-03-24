@@ -54,8 +54,8 @@
 #define RAZER_MAMBA_TE_ROW_LEN 16       // 0 => 15
 #define RAZER_DIAMONDBACK_ROW_LEN 21    // 0 => 20
 
-#define RAZER_MOUSE_WAIT_MIN_US 600
-#define RAZER_MOUSE_WAIT_MAX_US 20000
+#define RAZER_MOUSE_WAIT_MIN_US 20000
+#define RAZER_MOUSE_WAIT_MAX_US 20100
 
 struct razer_mouse_device {
     struct usb_device *usb_dev;
