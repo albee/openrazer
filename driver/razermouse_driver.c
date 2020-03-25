@@ -686,7 +686,7 @@ static ssize_t razer_attr_read_get_battery(struct device *dev, struct device_att
     switch(usb_dev->descriptor.idProduct) {
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
-        report.transaction_id.id = 0x3f;
+        report.transaction_id.id = 0x1f;
         break;
     }
 
@@ -710,7 +710,7 @@ static ssize_t razer_attr_read_is_charging(struct device *dev, struct device_att
     switch(usb_dev->descriptor.idProduct) {
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
-        report.transaction_id.id = 0x3f;
+        report.transaction_id.id = 0x1f;
         break;
     }
 
