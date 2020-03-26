@@ -1507,3 +1507,37 @@ class RazerDeathAdder1800(__RazerDevice):
     RAZER_URLS = {
         "top_img": DEVICE_IMAGE
     }
+
+
+class RazerAtheris(__RazerDevice):
+    """
+    Class for the Razer Atheris
+    """
+    USB_VID = 0x1532
+    USB_PID = 0x0062
+    METHODS = ['get_device_type_mouse', 'get_dpi_xy', 'set_dpi_xy', 'get_poll_rate', 'set_poll_rate', 'max_dpi',
+                   # Battery
+               'get_battery', 'set_idle_time', 'set_low_battery_threshold']
+
+    DPI_MAX = 7200
+
+    DEVICE_IMAGE = "https://assets.razerzone.com/eeimages/support/products/1234/1234_atheris.png"
+
+    # Deprecated - RAZER_URLS be removed in future.
+    RAZER_URLS = {
+        "top_img": "https://assets.razerzone.com/eeimages/support/products/1234/1234_atheris.png"
+    }
+
+    def __init__(self, *args, **kwargs):
+        super(RazerAtheris, self).__init__(*args, **kwargs)
+
+        self._battery_manager = _BatteryManager(self, self._device_number, 'Razer Atheris')
+        self._battery_manager.active = self.config.getboolean('Startup', 'mouse_battery_notifier', fallback=False)
+
+    def _close(self):
+        """
+        Close the key manager
+        """
+        super(RazerAtheris, self)._close()
+
+        self._battery_manager.close()

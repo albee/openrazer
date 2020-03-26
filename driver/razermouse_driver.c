@@ -321,6 +321,9 @@ static ssize_t razer_attr_read_device_type(struct device *dev, struct device_att
 
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
         device_type = "Razer Mamba Wireless (Wired)\n";
+
+    case USB_DEVICE_ID_RAZER_ATHERIS:
+        device_type = "Razer Atheris\n";
         break;
 
     default:
@@ -359,6 +362,7 @@ static ssize_t razer_attr_read_get_firmware_version(struct device *dev, struct d
     case USB_DEVICE_ID_RAZER_LANCEHEAD_TE_WIRED:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
+    case USB_DEVICE_ID_RAZER_ATHERIS:
         report.transaction_id.id = 0x3f;
         break;
     }
@@ -658,6 +662,7 @@ static ssize_t razer_attr_read_get_serial(struct device *dev, struct device_attr
     case USB_DEVICE_ID_RAZER_LANCEHEAD_TE_WIRED:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
+    case USB_DEVICE_ID_RAZER_ATHERIS:
         report.transaction_id.id = 0x3f;
         break;
     }
@@ -686,6 +691,7 @@ static ssize_t razer_attr_read_get_battery(struct device *dev, struct device_att
     switch(usb_dev->descriptor.idProduct) {
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
+    case USB_DEVICE_ID_RAZER_ATHERIS:
         report.transaction_id.id = 0x3f;
         break;
     }
@@ -797,6 +803,7 @@ static ssize_t razer_attr_read_poll_rate(struct device *dev, struct device_attri
     case USB_DEVICE_ID_RAZER_LANCEHEAD_TE_WIRED:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
+    case USB_DEVICE_ID_RAZER_ATHERIS:
         report.transaction_id.id = 0x3f;
         break;
     }
@@ -852,6 +859,7 @@ static ssize_t razer_attr_write_poll_rate(struct device *dev, struct device_attr
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
+    case USB_DEVICE_ID_RAZER_ATHERIS:
         report.transaction_id.id = 0x3f;
         break;
     }
@@ -1065,6 +1073,7 @@ static ssize_t razer_attr_write_mouse_dpi(struct device *dev, struct device_attr
         case USB_DEVICE_ID_RAZER_LANCEHEAD_TE_WIRED:
         case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER:
         case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
+        case USB_DEVICE_ID_RAZER_ATHERIS:
             report.transaction_id.id = 0x3f;
             break;
 
@@ -1141,6 +1150,7 @@ static ssize_t razer_attr_read_mouse_dpi(struct device *dev, struct device_attri
     case USB_DEVICE_ID_RAZER_LANCEHEAD_TE_WIRED:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
+    case USB_DEVICE_ID_RAZER_ATHERIS:
         report = razer_chroma_misc_get_dpi_xy(NOSTORE);
         report.transaction_id.id = 0x3f;
         break;
@@ -1315,6 +1325,7 @@ static ssize_t razer_attr_write_device_mode(struct device *dev, struct device_at
         case USB_DEVICE_ID_RAZER_LANCEHEAD_TE_WIRED:
         case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER:
         case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
+        case USB_DEVICE_ID_RAZER_ATHERIS:
             report.transaction_id.id = 0x3f;
             break;
         }
@@ -1351,6 +1362,7 @@ static ssize_t razer_attr_read_device_mode(struct device *dev, struct device_att
     case USB_DEVICE_ID_RAZER_LANCEHEAD_TE_WIRED:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER:
     case USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED:
+    case USB_DEVICE_ID_RAZER_ATHERIS:
         report.transaction_id.id = 0x3f;
         break;
 
@@ -3265,6 +3277,14 @@ static int razer_mouse_probe(struct hid_device *hdev, const struct hid_device_id
             CREATE_DEVICE_FILE(&hdev->dev, &dev_attr_matrix_effect_custom);
             CREATE_DEVICE_FILE(&hdev->dev, &dev_attr_matrix_custom_frame);
             break;
+
+        case USB_DEVICE_ID_RAZER_ATHERIS:
+            CREATE_DEVICE_FILE(&hdev->dev, &dev_attr_charge_level);
+            CREATE_DEVICE_FILE(&hdev->dev, &dev_attr_charge_low_threshold);
+            CREATE_DEVICE_FILE(&hdev->dev, &dev_attr_device_idle_time);
+            CREATE_DEVICE_FILE(&hdev->dev, &dev_attr_poll_rate);
+            CREATE_DEVICE_FILE(&hdev->dev, &dev_attr_dpi);
+            break;
         }
 
     }
@@ -3647,6 +3667,14 @@ static void razer_mouse_disconnect(struct hid_device *hdev)
             device_remove_file(&hdev->dev, &dev_attr_matrix_effect_custom);
             device_remove_file(&hdev->dev, &dev_attr_matrix_custom_frame);
             break;
+
+        case USB_DEVICE_ID_RAZER_ATHERIS:
+            device_remove_file(&hdev->dev, &dev_attr_charge_level);
+            device_remove_file(&hdev->dev, &dev_attr_charge_low_threshold);
+            device_remove_file(&hdev->dev, &dev_attr_device_idle_time);
+            device_remove_file(&hdev->dev, &dev_attr_poll_rate);
+            device_remove_file(&hdev->dev, &dev_attr_dpi);
+            break;
         }
 
     }
@@ -3696,6 +3724,7 @@ static const struct hid_device_id razer_devices[] = {
     { HID_USB_DEVICE(USB_VENDOR_ID_RAZER,USB_DEVICE_ID_RAZER_DEATHADDER_1800) },
     { HID_USB_DEVICE(USB_VENDOR_ID_RAZER,USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_RECEIVER) },
     { HID_USB_DEVICE(USB_VENDOR_ID_RAZER,USB_DEVICE_ID_RAZER_MAMBA_WIRELESS_WIRED) },
+    { HID_USB_DEVICE(USB_VENDOR_ID_RAZER,USB_DEVICE_ID_RAZER_ATHERIS) },
     { 0 }
 };
 
